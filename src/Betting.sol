@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
+import "src/BettingERC20.sol";
+
 contract Betting {
     /// @title an on-chain sports betting contract with Liquidity provision mechanism
     /// @author @Sam GMK
@@ -29,21 +31,24 @@ contract Betting {
 
 
     //--------------------------------------EVENTS-----------------------------------------------//
-    event Deposit();
+    event Deposit(address indexed to, uint amount);
     event Withdraw();
     event Bet();
 
     //-------------------------------------- LP LOGIC---------------------------------------------//
     
-    /// @notice Explain to an end user what this does
-    /// @dev Explain to a developer any extra details
-    /// @param Documents a parameter just like in doxygen (must be followed by parameter name)
-    /// @return Documents the return variables of a contract’s function state variable
-    /// @inheritdoc	Copies all missing tags from the base function (must be followed by the contract name)
+    /// @notice user provides liquidity and LP token is minted
+    /// @dev desposited amount is calculated without trusting user input i.e newBalance
+    /// @param to receiving address of minted LP tokens
     function deposit(address to) lock external {
+        uint _oldBalance = oldBalance; //gas savings
         uint newBalance = IERC20(token).balanceOf(address(this));
-        uint depositedAmount = newBalance - oldBalance;
-        require(depositedAmount > 0, "DEPOSIT AMOUNT: INVALID");
+        require(newBalance > _oldBalance , "INVALID INPUT");
+        uint depositedAmount = newBalance - _oldBalance;
+        _mint(to, depositedAmount);
+        _oldBalance = newbalance;
+
+        emit Deposit(to,depositedAmount);
     }
 
     /// @notice Explain to an end user what this does
