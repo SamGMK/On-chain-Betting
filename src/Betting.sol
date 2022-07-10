@@ -18,6 +18,11 @@ contract Betting {
     //stablecoin for betting. Must be an erc20.
     address public token;
 
+    //total contract winnings for contract's lifetime
+    uint private totalWinnigs;
+    //total contract losses for contract's lifetime
+    uint private totalLosses;
+
 
     //re-entrancy guard
     uint private unlocked = 1;
@@ -29,8 +34,8 @@ contract Betting {
         unlocked = 1;
     }
 
-
     //--------------------------------------EVENTS-----------------------------------------------//
+    
     event Deposit(address indexed to, uint amount);
     event Withdraw();
     event Bet();
@@ -56,5 +61,18 @@ contract Betting {
     /// @param Documents a parameter just like in doxygen (must be followed by parameter name)
     /// @return Documents the return variables of a contract’s function state variable
     /// @inheritdoc	Copies all missing tags from the base function (must be followed by the contract name)
-    function withdraw(address to) lock external {}
+    function withdraw(address to) lock external {
+        uint _oldBalance = oldBalance; //gas savings
+
+
+    }
+
+    /// @notice Explain to an end user what this does
+    /// @dev Explain to a developer any extra details
+    /// @param Documents a parameter just like in doxygen (must be followed by parameter name)
+    /// @return Documents the return variables of a contract’s function state variable
+    /// @inheritdoc	Copies all missing tags from the base function (must be followed by the contract name)
+    function previewProfitLosses(address LiquidityProvider) internal view returns(uint) {
+
+    }
 }
