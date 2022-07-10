@@ -10,6 +10,20 @@ contract Betting {
     /// Liquidity Providers(LPs) relative to their share of LP tokens.
     /// @dev Owner of the contract has the power to activate fees.
 
+    //Contract balance tracker
+    uint private oldBalance;
+    
+    //re-entrancy guard
+    uint private unlocked = 1;
+
+    modifier lock() {
+        require(unlocked == 1, 'BETTING: LOCKED');
+        unlocked = 0;
+        _;
+        unlocked = 1;
+    }
+
+
     //--------------------------------------EVENTS-----------------------------------------------//
     event Deposit();
     event Withdraw();
@@ -22,12 +36,12 @@ contract Betting {
     /// @param Documents a parameter just like in doxygen (must be followed by parameter name)
     /// @return Documents the return variables of a contract’s function state variable
     /// @inheritdoc	Copies all missing tags from the base function (must be followed by the contract name)
-    function deposit() public {}
+    function deposit(address to) lock external {}
 
     /// @notice Explain to an end user what this does
     /// @dev Explain to a developer any extra details
     /// @param Documents a parameter just like in doxygen (must be followed by parameter name)
     /// @return Documents the return variables of a contract’s function state variable
     /// @inheritdoc	Copies all missing tags from the base function (must be followed by the contract name)
-    function withdraw() public {}
+    function withdraw(address to) lock external {}
 }
