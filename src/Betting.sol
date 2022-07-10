@@ -73,6 +73,12 @@ contract Betting {
     /// @return Documents the return variables of a contract’s function state variable
     /// @inheritdoc	Copies all missing tags from the base function (must be followed by the contract name)
     function previewProfitLosses(address LiquidityProvider) internal view returns(uint) {
-
+        uint profit = totalWinnigs - totalLosses;
+        if(profit > 0) {
+           uint totalProfit = balanceOf[LiquidityProvider] + profit;
+           return totalProfit;
+        } else {
+            return balanceOf[LiquidityProvider];
+        }
     }
 }
